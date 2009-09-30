@@ -27,7 +27,7 @@ from mapfishsample.model.meta import metadata, engine
 
 summits_table = Table(
     'sommets_out', metadata,
-    Column('geom', Geometry(32768)),
+    Column('geom', Geometry(4326)),
     autoload=True, autoload_with=engine)
 
 class Summit(GeometryTableMixIn):
