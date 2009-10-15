@@ -7,15 +7,13 @@ except ImportError:
 
 setup(
     name='MapFishSample',
-    version='0.1',
+    version='1.2',
     description='',
     author='',
     author_email='',
     #url='',
     install_requires=[
-        "Pylons>=0.9.6",
-        "SQLAlchemy>=0.4",
-        "Mako",
+        "mapfish>=1.2,mapfish<=1.2.99",
     ],
     setup_requires=["PasteScript==dev,>=1.6.3dev-r7326"],
     packages=find_packages(exclude=['ez_setup']),
