@@ -4,7 +4,6 @@ import os, sys
 site.addsitedir('%PYTHON_SITE%')
 
 sys.path.append('%PROJECT_DIR%/%PROJECT%')
-os.environ['PYTHON_EGG_CACHE'] = '/tmp/python-eggs'
 
 # configure the logging system
 from paste.script.util.logging_config import fileConfig
