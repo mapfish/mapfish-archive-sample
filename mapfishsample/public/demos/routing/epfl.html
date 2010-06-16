@@ -6,14 +6,25 @@
     <title>Routing</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/externals/ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/externals/openlayers/theme/default/style.css"/>
 
-    <script type="text/javascript" src="../../mfbase/ext/adapter/ext/ext-base.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext/ext-all.js"></script>
+    <script type="text/javascript" src="../../lib/externals/ext/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../../lib/externals/ext/ext-all.js"></script>
 
-    <script type="text/javascript" src="../../mfbase/release/mapfish/MapFish.js"></script>
-
+	<!-- debug mode -->
+	<!--
+	<script type="text/javascript" src="../../lib/externals/openlayers/lib/OpenLayers.js"></script>
+	<script type="text/javascript" src="../../lib/externals/mapfish/MapFish.js"></script>
+	-->
+	<!-- prod mode -->
+	<script type="text/javascript" src="../../build/MapFish.js"></script>
+	
+	
     <script type="text/javascript">
+
+    OpenLayers.ImgPath = '../../lib/externals/openlayers/img/';
+    Ext.BLANK_IMAGE_URL = '../../lib/externals/ext/resources/images/default/s.gif';
 
     function epflCreateMap(mapDiv) {
 
@@ -21,7 +32,8 @@
             projection: "EPSG:21781",
             units: "m",
             maxExtent: new OpenLayers.Bounds(526000, 147000, 543000, 161000),
-            scales: [1/100, 1/500, 1/1500, 1/3000, 1/5000]
+            scales: [1/100, 1/500, 1/1500, 1/3000, 1/5000],
+            theme: null
          };
 
         var map = new OpenLayers.Map(mapDiv, options);

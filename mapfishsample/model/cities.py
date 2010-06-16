@@ -17,22 +17,17 @@
 # along with MapFish Server.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from sqlalchemy import Column, Table, types
-from sqlalchemy.orm import mapper
+from geoalchemy import GeometryColumn, Geometry
 
-from mapfish.sqlalchemygeom import Geometry
 from mapfish.sqlalchemygeom import GeometryTableMixIn
+from mapfishsample.model.meta import engine, Base
 
-from mapfishsample.model.meta import metadata, engine
 
-cities_table = Table(
-    'world_cities', metadata,
-    Column('the_geom', Geometry(4326)),
-    autoload=True, autoload_with=engine)
-
-class City(GeometryTableMixIn):
-    # for GeometryTableMixIn to do its job the __table__ property
-    # must be set here
-    __table__ = cities_table
-
-mapper(City, cities_table)
+class City(Base, GeometryTableMixIn):
+    __tablename__ = 'world_cities'
+    __table_args__ = {
+            'autoload' : True,
+            'autoload_with' : engine
+        }
+    
+    the_geom = GeometryColumn(Geometry(dimension=2, srid=4326))

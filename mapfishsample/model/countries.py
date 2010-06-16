@@ -17,22 +17,25 @@
 # along with MapFish Server.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from sqlalchemy import Column, Table, types
-from sqlalchemy.orm import mapper
+from sqlalchemy import types, Column
 
-from mapfish.sqlalchemygeom import Geometry
+from geoalchemy import GeometryColumn, Geometry
+
 from mapfish.sqlalchemygeom import GeometryTableMixIn
+from mapfishsample.model.meta import engine, Base
 
-from mapfishsample.model.meta import metadata, engine
 
-countries_table = Table(
-    'world_factbk_simplified', metadata,
-    Column('simplify', Geometry(4326)),
-    autoload=True, autoload_with=engine)
+class Country(Base, GeometryTableMixIn):
+    __tablename__ = 'world_factbk_simplified'
+    __table_args__ = {
+            'autoload' : True,
+            'autoload_with' : engine
+        }
+    
+    # force SQLAlchemy not to use Decimals, see https://trac.mapfish.org/trac/mapfish/ticket/185
+    birth_rt = Column(types.Numeric(asdecimal=False))
+    death_rt = Column(types.Numeric(asdecimal=False))
+    fertility = Column(types.Numeric(asdecimal=False))
+    
+    simplify = GeometryColumn(Geometry(dimension=2, srid=4326))
 
-class Country(GeometryTableMixIn):
-    # for GeometryTableMixIn to do its job the __table__ property
-    # must be set here
-    __table__ = countries_table
-
-mapper(Country, countries_table)

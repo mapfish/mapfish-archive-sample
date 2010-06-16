@@ -29,7 +29,7 @@ from mapfish.plugins import pgrouting
 
 from mapfishsample.lib.base import BaseController
 from mapfishsample.model.meta import Session, engine
-from mapfishsample.model import nodes_table, Node, Line
+from mapfishsample.model.epfl import Node, Line
 
 log = logging.getLogger(__name__)
 
@@ -39,23 +39,30 @@ class EpflController(BaseController):
     def room(self):
         if 'query' in request.params:
             rooms = Session.query(Node).filter(Node.room.like(request.params['query'] + '%'))
-            return {'results': [{'id': r.room, 'title': r.room} for r in rooms.order_by(nodes_table.c.room)]}
+            return {'results': [{'id': r.room, 'title': r.room} for r in rooms.order_by(Node.__table__.c.room)]}
 
     def routing(self):
-        source_id = Session.query(Node).filter(nodes_table.c.room == request.params['from'])[0].node_id
-        target_id = Session.query(Node).filter(nodes_table.c.room == request.params['to'])[0].node_id
+        source_id = Session.query(Node).filter(Node.__table__.c.room == request.params['from'])[0].node_id
+        target_id = Session.query(Node).filter(Node.__table__.c.room == request.params['to'])[0].node_id
 
         if 'disabled' in request.params and request.params['disabled'] == '1':
-            cost = "CASE WHEN type = '9.2' THEN -1.0::float8 ELSE length::float8 END"
+            """If a node is not suitable for disabled (type = '9.2'), it should not be taken into account for routing.
+            Because pgrouting does not allow negative values as cost, we set the length to 'Infinity'.
+            see also: http://pgrouting.postlbs.org/ticket/88
+            """
+            cost = "CASE WHEN type = '9.2' THEN 'Infinity'::float8 ELSE length::float8 END"
         else:
             cost = "length::float8"
             
         route = pgrouting.shortest_path(engine,
                                         "SELECT gid AS id, node1_id::int4 AS source, node2_id::int4 AS target, %(cost)s AS cost FROM lines2"%{'cost': cost},
                                         int(source_id), int(target_id)).fetchall()
-
-        source_f = Session.query(Node).get(route[0]['vertex_id']).toFeature()
-        target_f = Session.query(Node).get(route[-1]['vertex_id']).toFeature()
+        
+        if route is None or len(route) <= 0:
+            abort(400)
+        
+        source_f = Session.query(Node).filter(Node.node_id == route[0]['vertex_id']).first().toFeature()
+        target_f = Session.query(Node).filter(Node.node_id == route[-1]['vertex_id']).first().toFeature()
         
         source_f.properties['_isSourceNode'] = True
         target_f.properties['_isTargetNode'] = True

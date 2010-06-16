@@ -3,7 +3,8 @@
 <head>
   <title>Search demo</title>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
-  <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/ext-all.css"/>
+  <link rel="stylesheet" type="text/css" href="../../lib/externals/ext/resources/css/ext-all.css"/>
+  <link rel="stylesheet" type="text/css" href="../../lib/externals/openlayers/theme/default/style.css"/>
 
   <style type="text/css">
     html, body {
@@ -57,7 +58,7 @@
         font: normal 10px arial,tahoma,sans-serif;
     }
     .pan {
-        background-image: url(../../mfbase/mapfish/img/icon_pan.png) !important;
+        background-image: url(../../lib/externals/mapfish/img/icon_pan.png) !important;
         height: 20px !important;
         width: 20px !important;
     }
@@ -69,7 +70,7 @@
   </style>
   
   <!-- EXT colorField Extent -->
-  <link rel="stylesheet" type="text/css" href="../../mfbase/ext-community-extensions/color-field.css" />
+  <link rel="stylesheet" type="text/css" href="../../lib/ext-community-extensions/color-field.css" />
 </head>
 
 <body>
@@ -77,7 +78,7 @@
     <div class="loading-mask"></div>
     <div class="loading-container">
       <div class="loading-indicator">
-        <img src="../../mfbase/ext/resources/images/default/shared/large-loading.gif"
+        <img src="../../lib/externals/ext/resources/images/default/shared/large-loading.gif"
              width="32" height="32" style="margin-right:8px;float:left;vertical-align:top;"/>MapFish - Search
          <br />
          <span id="loading-msg">Loading ...</span>
@@ -91,31 +92,31 @@
   <div id="searchform"></div>
 </body>
 
-<script type="text/javascript" src="../../mfbase/ext/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../../lib/externals/ext/adapter/ext/ext-base.js"></script>
 <!-- debug mode -->
 <!--
-<script type="text/javascript" src="../../mfbase/ext/ext-core-debug.js"></script>
-<script type="text/javascript" src="../../mfbase/ext/ext-all-debug.js"></script>
+<script type="text/javascript" src="../../lib/externals/ext/ext-core-debug.js"></script>
+<script type="text/javascript" src="../../lib/externals/ext/ext-all-debug.js"></script>
 -->
 <!-- prod mode -->
-<script type="text/javascript" src="../../mfbase/ext/ext-all.js"></script>
+<script type="text/javascript" src="../../lib/externals/ext/ext-all.js"></script>
 
 <!-- debug mode -->
 <!--
-<script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers.js"></script>
-<script type="text/javascript" src="../../mfbase/geoext/lib/GeoExt.js"></script>
-<script type="text/javascript" src="../../mfbase/mapfish/MapFish.js"></script>
+<script type="text/javascript" src="../../lib/externals/openlayers/lib/OpenLayers.js"></script>
+<script type="text/javascript" src="../../lib/externals/geoext/lib/GeoExt.js"></script>
+<script type="text/javascript" src="../../lib/externals/mapfish/MapFish.js"></script>
 -->
 <!-- prod mode -->
-<script type="text/javascript" src="../../mfbase/release/mapfish/MapFish.js"></script>
+<script type="text/javascript" src="../../build/MapFish.js"></script>
 
 <!-- EXT colorField Extent -->
-<script type="text/javascript" src="../../mfbase/ext-community-extensions/color-field.js" ></script>
+<script type="text/javascript" src="../../lib/ext-community-extensions/color-field.js" ></script>
 
 <script type="text/javascript">
 
-  // reference local blank image
-  Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
+  OpenLayers.ImgPath = '../../lib/externals/openlayers/img/';
+  Ext.BLANK_IMAGE_URL = '../../lib/externals/ext/resources/images/default/s.gif';
 
   function createMap() {
       var scales = [
@@ -129,7 +130,8 @@
           projection: "EPSG:4326",
           controls: [new OpenLayers.Control.PanZoomBar()],
           maxExtent: new OpenLayers.Bounds(-180, -90, 180, 90),
-          scales: scales
+          scales: scales,
+          theme: null
       };
   
       return new OpenLayers.Map(options);

@@ -17,22 +17,17 @@
 # along with MapFish Server.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from sqlalchemy import Column, Table, types
-from sqlalchemy.orm import mapper
+from geoalchemy import GeometryColumn, Point
 
-from mapfish.sqlalchemygeom import Geometry
 from mapfish.sqlalchemygeom import GeometryTableMixIn
+from mapfishsample.model.meta import engine, Base
 
-from mapfishsample.model.meta import metadata, engine
 
-summits_table = Table(
-    'sommets_out', metadata,
-    Column('geom', Geometry(4326)),
-    autoload=True, autoload_with=engine)
-
-class Summit(GeometryTableMixIn):
-    # for GeometryTableMixIn to do its job the __table__ property
-    # must be set here
-    __table__ = summits_table
-
-mapper(Summit, summits_table)
+class Summit(Base, GeometryTableMixIn):
+    __tablename__ = 'sommets_out'
+    __table_args__ = {
+            'autoload' : True,
+            'autoload_with' : engine
+        }
+    
+    geom = GeometryColumn(Point(dimension=2, srid=4326))

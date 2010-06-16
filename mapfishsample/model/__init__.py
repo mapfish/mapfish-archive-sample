@@ -20,55 +20,35 @@
 """The application's model objects"""
 import sqlalchemy as sa
 from sqlalchemy import orm
+from sqlalchemy.dialects.sqlite.base import SQLiteDialect
+from sqlalchemy.interfaces import PoolListener
 
 from geojson import Feature
 
 from mapfishsample.model import meta
-from mapfish.sqlalchemygeom import Geometry
+
+from mapfishsample.model.lines import Line
+from mapfishsample.model.points import Point
+from mapfishsample.model.polygons import Polygon
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
     ## Reflected tables must be defined and mapped here
-    #global reflected_table
-    #reflected_table = sa.Table("Reflected", meta.metadata, autoload=True,
-    #                           autoload_with=engine)
-    #orm.mapper(Reflected, reflected_table)
-
     sm = orm.sessionmaker(autoflush=True, autocommit=False, bind=engine)
 
     meta.engine = engine
     meta.Session = orm.scoped_session(sm)
-
-
-nodes_table = sa.Table('nodes2', meta.metadata,
-    sa.Column('node_id', sa.types.Integer, primary_key=True),
-    sa.Column('room', sa.types.String, unique=True),
-    sa.Column('level', sa.types.Integer),
-    sa.Column('geom', Geometry))
-
-class Node(object):
-    __table__ = nodes_table
-    def toFeature(self):
-        return Feature(id=int(self.node_id), geometry=self.geom,
-            properties={'room': str(self.room), 'floor': str(self.level)})
-
-orm.mapper(Node, nodes_table)
-
-lines_table = sa.Table('lines2', meta.metadata,
-    sa.Column('gid', sa.types.Integer, primary_key=True),
-    sa.Column('length', sa.types.Float),
-    sa.Column('geom', Geometry))
-
-class Line(object):
-    def toFeature(self):
-        return Feature(id=int(self.gid), geometry=self.geom,
-            properties={'distance': float(self.length)})
-
-orm.mapper(Line, lines_table)
-
-## Classes for reflected tables may be defined here, but the table and
-## mapping itself must be done in the init_model function
-#reflected_table = None
-#
-#class Reflected(object):
-#    pass
+    
+    if isinstance(engine.dialect, SQLiteDialect):
+        """If Spatialite is used as database, we have to make sure that
+        every database connection created in the SQLAlchemy connection pool
+        loads the Spatialite extension, before the connection is used.
+        """
+        class SpatialiteConnectionListener(PoolListener):
+            def connect(self, dbapi_con, con_record):
+                dbapi_con.enable_load_extension(True)
+                dbapi_con.execute("select load_extension('/usr/local/lib/libspatialite.so')")
+                dbapi_con.enable_load_extension(False)
+                
+        engine.pool.add_listener(SpatialiteConnectionListener()) 
+        

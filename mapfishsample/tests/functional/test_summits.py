@@ -3,14 +3,14 @@ from geojson import loads
 
 class TestSummitsController(TestController):
     def test_index(self):
-        response = self.app.get(url_for(controller='summits'))
+        response = self.app.get(url(controller='summits', action='index'))
         assert response.response.content_type == 'application/json'
         assert "FeatureCollection" in response
 
     def test_index_limit_offset(self):
         # limit
         params = {"limit": 10}
-        response = self.app.get(url_for(controller='summits'),
+        response = self.app.get(url(controller='summits', action='index'),
                                 params=params)
         geojson = loads(response.response._body)
         features = geojson["features"]
@@ -20,7 +20,7 @@ class TestSummitsController(TestController):
 
         # limit & offset
         params = {"limit": 10, "offset": 1}
-        response = self.app.get(url_for(controller='summits'),
+        response = self.app.get(url(controller='summits', action='index'),
                                 params=params)
         geojson = loads(response.response._body)
         features = geojson['features']
@@ -29,7 +29,7 @@ class TestSummitsController(TestController):
 
     def test_index_lonlat(self):
         params = {"lon": 5, "lat": 45, "tolerance": 0.5}
-        response = self.app.get(url_for(controller='summits'),
+        response = self.app.get(url(controller='summits', action='index'),
                                 params=params)
         geojson = loads(response.response._body)
         features = geojson["features"]
@@ -40,7 +40,7 @@ class TestSummitsController(TestController):
 
     def test_index_box(self):
         params = {"box": "5,45,5.5,45.5"}
-        response = self.app.get(url_for(controller='summits'),
+        response = self.app.get(url(controller='summits', action='index'),
                                 params=params)
         geojson = loads(response.response._body)
         features = geojson["features"]
@@ -52,8 +52,8 @@ class TestSummitsController(TestController):
             assert coords[1] <= 45.5
 
     def test_index_min(self):
-        params = {"limit": 5, "min": 2000}
-        response = self.app.get(url_for(controller='summits'),
+        params = {"limit": 5, "queryable": "elevation", "elevation__gte": 2000}
+        response = self.app.get(url(controller='summits', action='index'),
                                 params=params)
         geojson = loads(response.response._body)
         features = geojson["features"]
@@ -62,8 +62,8 @@ class TestSummitsController(TestController):
             assert elevation >= 2000
 
     def test_index_max(self):
-        params = {"limit": 5, "max": 2000}
-        response = self.app.get(url_for(controller='summits'),
+        params = {"limit": 5, "queryable": "elevation", "elevation__lte": 2000}
+        response = self.app.get(url(controller='summits', action='index'),
                                 params=params)
         geojson = loads(response.response._body)
         features = geojson["features"]

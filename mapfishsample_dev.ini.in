@@ -1,5 +1,5 @@
 #
-# MapFishSample - MapFish development environment configuration
+# MapFishSample - Pylons development environment configuration
 #
 # The %(here)s variable will be replaced with the parent directory of this file
 #
@@ -9,8 +9,6 @@ debug = true
 #email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
-print.jar = /home/eric/public_html/mapfish/mapfishsample/print/print-standalone.jar
-print.config = /home/eric/public_html/mapfish/mapfishsample/print/config.yaml
 
 [server:main]
 use = egg:Paste#http
@@ -18,27 +16,9 @@ host = 0.0.0.0
 port = 5000
 
 [app:main]
-use = egg:MapFishSample
-full_stack = true
-
-cache_dir = %(here)s/data
-beaker.session.key = mapfishsample
-beaker.session.secret = somesecret
-
-# If you'd like to fine-tune the individual locations of the cache data dirs
-# for the Cache data, or the Session saves, un-comment the desired settings
-# here:
-#beaker.cache.data_dir = %(here)s/data/cache
-#beaker.session.data_dir = %(here)s/data/sessions
-
-# SQLAlchemy database URL
-sqlalchemy.url = postgres://www-data:www-data@localhost/trunk_mapfishsample
-
-# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
-# Debug mode will enable the interactive debugging tool, allowing ANYONE to
-# execute malicious code after an exception is raised.
-#set debug = false
-
+use = config:mapfishsample_prod.ini
+static_files = true
+set debug = true
 
 # Logging configuration
 [loggers]

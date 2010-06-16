@@ -17,22 +17,25 @@
 # along with MapFish Server.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from sqlalchemy import Column, Table, types
-from sqlalchemy.orm import mapper
+from sqlalchemy import Column, types
+from sqlalchemy.schema import Sequence
 
-from mapfish.sqlalchemygeom import Geometry
+from geoalchemy import GeometryColumn, Polygon, GeometryDDL
+
 from mapfish.sqlalchemygeom import GeometryTableMixIn
+from mapfishsample.model.meta import Base
 
-from mapfishsample.model.meta import metadata, engine
+# dimension information array for Oracle
+diminfo = "MDSYS.SDO_DIM_ARRAY("\
+            "MDSYS.SDO_DIM_ELEMENT('LONGITUDE', -180, 180, 0.000000005),"\
+            "MDSYS.SDO_DIM_ELEMENT('LATITUDE', -90, 90, 0.000000005)"\
+            ")"
 
-polygons_table = Table(
-    'polygons', metadata,
-    Column('the_geom', Geometry(4326)),
-    autoload=True, autoload_with=engine)
+class Polygon(Base, GeometryTableMixIn):
+    __tablename__ = 'polygons'
+    
+    id = Column(types.Integer, Sequence('polygons_id_seq'), primary_key=True)
+    name = Column(types.String(30), default = 'foo')
+    the_geom = GeometryColumn(Polygon(dimension=2, srid=4326, diminfo=diminfo))
 
-class Polygon(GeometryTableMixIn):
-    # for GeometryTableMixIn to do its job the __table__ property
-    # must be set here
-    __table__ = polygons_table
-
-mapper(Polygon, polygons_table)
+GeometryDDL(Polygon.__table__)

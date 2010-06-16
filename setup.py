@@ -7,15 +7,15 @@ except ImportError:
 
 setup(
     name='MapFishSample',
-    version='1.3dev',
+    version='2.0dev',
     description='',
     author='',
     author_email='',
     #url='',
     install_requires=[
-        "mapfish>=1.3dev,<=1.3.99",
+        "mapfish>=2.0dev,<=2.0.99",
+        "GeoFormAlchemy>=0.1dev,<=0.1.99",
     ],
-    setup_requires=["PasteScript==dev,>=1.6.3dev-r7326"],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
     test_suite='nose.collector',
@@ -25,7 +25,6 @@ setup(
     #        ('templates/**.mako', 'mako', None),
     #        ('public/**', 'ignore', None)]},
     zip_safe=False,
-    paster_plugins=['MapFish', 'PasteScript', 'Pylons'],
     entry_points="""
     [paste.app_factory]
     main = mapfishsample.config.middleware:make_app
