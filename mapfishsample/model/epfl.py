@@ -20,7 +20,7 @@
 from geoalchemy import GeometryColumn, Geometry
 
 from mapfish.sqlalchemygeom import GeometryTableMixIn
-from mapfishsample.model.meta import engine, Base
+from mapfishsample.model.meta import Session, Base
 
 from geojson import Feature
 from shapely.wkb import loads
@@ -29,7 +29,7 @@ class Node(Base, GeometryTableMixIn):
     __tablename__ = 'nodes2'
     __table_args__ = {
             'autoload' : True,
-            'autoload_with' : engine
+            'autoload_with' : Session.bind
         }
     
     geom = GeometryColumn(Geometry(dimension=2, srid=4326))

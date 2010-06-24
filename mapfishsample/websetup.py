@@ -1,8 +1,10 @@
 """Setup the MapFishSample application"""
 import logging
 
+import pylons
+
 from mapfishsample.config.environment import load_environment
-from mapfishsample.model import meta
+from mapfishsample.model.meta import Session, Base
 
 log = logging.getLogger(__name__)
 
@@ -12,7 +14,9 @@ def setup_app(command, conf, vars):
     
     paster setup-app development.ini [--name=main_pylons]
     """
-    load_environment(conf.global_conf, conf.local_conf)
+    # Don't reload the app if it was loaded under the testing environment
+    if not pylons.test.pylonsapp:
+        load_environment(conf.global_conf, conf.local_conf)
 
     # Create the tables for the editing example (if they aren't there already)
-    meta.metadata.create_all(bind=meta.engine)
+    Base.metadata.create_all(bind=Session.bind)

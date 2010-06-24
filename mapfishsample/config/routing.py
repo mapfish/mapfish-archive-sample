@@ -8,7 +8,7 @@ from pylons import config
 from routes import Mapper
 from mapfish.controllers import printer
 
-def make_map():
+def make_map(config):
     """Create, configure and return the routes Mapper"""
     map = Mapper(directory=config['pylons.paths']['controllers'],
                  always_scan=config['debug'])

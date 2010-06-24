@@ -22,14 +22,14 @@ from sqlalchemy import types, Column
 from geoalchemy import GeometryColumn, Geometry
 
 from mapfish.sqlalchemygeom import GeometryTableMixIn
-from mapfishsample.model.meta import engine, Base
+from mapfishsample.model.meta import Session, Base
 
 
 class Country(Base, GeometryTableMixIn):
     __tablename__ = 'world_factbk_simplified'
     __table_args__ = {
             'autoload' : True,
-            'autoload_with' : engine
+            'autoload_with' : Session.bind
         }
     
     # force SQLAlchemy not to use Decimals, see https://trac.mapfish.org/trac/mapfish/ticket/185

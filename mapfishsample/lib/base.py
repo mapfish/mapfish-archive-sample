@@ -5,7 +5,7 @@ Provides the BaseController class for subclassing.
 from pylons.controllers import WSGIController
 from pylons.templating import render_mako as render
 
-from mapfishsample.model import meta
+from mapfishsample.model.meta import Session
 
 class BaseController(WSGIController):
 
@@ -17,5 +17,5 @@ class BaseController(WSGIController):
         try:
             return WSGIController.__call__(self, environ, start_response)
         finally:
-            meta.Session.remove()
+            Session.remove()
         

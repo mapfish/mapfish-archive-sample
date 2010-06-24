@@ -25,7 +25,7 @@ from sqlalchemy.interfaces import PoolListener
 
 from geojson import Feature
 
-from mapfishsample.model import meta
+from mapfishsample.model.meta import Session, Base
 
 from mapfishsample.model.lines import Line
 from mapfishsample.model.points import Point
@@ -34,10 +34,8 @@ from mapfishsample.model.polygons import Polygon
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
     ## Reflected tables must be defined and mapped here
-    sm = orm.sessionmaker(autoflush=True, autocommit=False, bind=engine)
 
-    meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
+    Session.configure(bind=engine)
     
     if isinstance(engine.dialect, SQLiteDialect):
         """If Spatialite is used as database, we have to make sure that
@@ -51,4 +49,3 @@ def init_model(engine):
                 dbapi_con.enable_load_extension(False)
                 
         engine.pool.add_listener(SpatialiteConnectionListener()) 
-        

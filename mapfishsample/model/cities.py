@@ -20,14 +20,14 @@
 from geoalchemy import GeometryColumn, Geometry
 
 from mapfish.sqlalchemygeom import GeometryTableMixIn
-from mapfishsample.model.meta import engine, Base
+from mapfishsample.model.meta import Session, Base
 
 
 class City(Base, GeometryTableMixIn):
     __tablename__ = 'world_cities'
     __table_args__ = {
             'autoload' : True,
-            'autoload_with' : engine
+            'autoload_with' : Session.bind
         }
     
     the_geom = GeometryColumn(Geometry(dimension=2, srid=4326))

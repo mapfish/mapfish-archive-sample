@@ -20,14 +20,14 @@
 from geoalchemy import GeometryColumn, Point
 
 from mapfish.sqlalchemygeom import GeometryTableMixIn
-from mapfishsample.model.meta import engine, Base
+from mapfishsample.model.meta import Session, Base
 
 
 class Summit(Base, GeometryTableMixIn):
     __tablename__ = 'sommets_out'
     __table_args__ = {
             'autoload' : True,
-            'autoload_with' : engine
+            'autoload_with' : Session.bind
         }
     
     geom = GeometryColumn(Point(dimension=2, srid=4326))
