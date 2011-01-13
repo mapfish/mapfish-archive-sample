@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='MapFishSample',
-    version='2.0dev',
+    version='2.0',
     description='',
     author='',
     author_email='',
