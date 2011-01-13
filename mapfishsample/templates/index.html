@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="Content-Language" content="${c.lang}" />
+
+        <title>Camptocamp MapFish Application</title>
+        
+        <link rel="shortcut icon" type="image/x-icon" href="${url('/app/images/favicon.ico')}" />
+
+% if c.debug:
+        <link rel="stylesheet" type="text/css" href="${url('/lib/ext/Ext/resources/css/ext-all.css')}" />
+        <link rel="stylesheet" type="text/css" href="${url('/lib/ext/Ext/resources/css/xtheme-gray.css')}" />
+        <link rel="stylesheet" type="text/css" href="${url('/lib/openlayers/theme/default/style.css')}" />
+        <link rel="stylesheet" type="text/css" href="${url('/lib/geoext.ux/ux/Measure/resources/css/measure.css')}" />
+        <link rel="stylesheet" type="text/css" href="${url('/app/css/main.css')}" />
+% else:
+        <link rel="stylesheet" type="text/css" href="${url('/build/app.css')}" />
+% endif
+
+% if c.debug:
+        <script type="text/javascript" src="${url('/lib/ext/Ext/adapter/ext/ext-base.js')}"></script>
+        <script type="text/javascript" src="${url('/lib/ext/Ext/ext-all-debug.js')}"></script>
+
+        <!--<script type="text/javascript" src="${url('/lib/proj4js/proj4js/lib/proj4js.js')}"></script>-->
+        <script type="text/javascript" src="${url('/lib/openlayers/lib/OpenLayers.js')}"></script>
+        <script type="text/javascript" src="${url('/lib/geoext/lib/GeoExt.js')}"></script>
+        <script type="text/javascript" src="${url('/lib/geoext.ux/ux/SimplePrint/lib/GeoExt.ux/SimplePrint.js')}"></script>
+        <script type="text/javascript" src="${url('/lib/geoext.ux/ux/FeatureEditing/lib/GeoExt.ux/FeatureEditorGrid.js')}"></script>
+        <script type="text/javascript" src="${url('/lib/geoext.ux/ux/FeatureBrowser/lib/GeoExt.ux/FeatureBrowser.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Lang/en.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Map.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/ToolWindow.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/ToolButton.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Query.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Tools.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Search.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Print.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/Edit.js')}"></script>
+        <script type="text/javascript" src="${url('/app/lib/App/main.js')}"></script>
+% else:
+        <script type="text/javascript" src="${url('/build/app.js')}"></script>
+      ## we don't build a language file for english
+%     if c.lang != 'en':
+        <script type="text/javascript" src="${url('/build/lang-%s.js' % c.lang)}"></script>
+%     endif
+% endif
+        <script type="text/javascript">
+            <%include file="globals.js" />
+            ##uncomment this line if you use the OGC proxy
+            ##OpenLayers.ProxyHost = "${url(controller='ogcproxy', action='index', url='')}";
+        </script>
+    </head>
+
+    <body>
+        <div id="content">
+            <h1>The MapFish Demo</h1>
+
+            <p class="paragraph">The goal of this MapFish demo application is
+            to demonstrate MapFish web services, for querying and editing
+            features, and printing.</p>
+
+            <p class="paragraph">Application developers may also find it useful
+            to use this application as the starting point for their
+            developments.</p>
+
+            <p class="paragraph">This demo application has the following
+            features: <em>Query</em>, <em> Editing</em>, <em>Search</em>, and
+            <em>Printing</em>. Click on the buttons in the toolbar above the
+            map to enable/disable these features.</p>
+
+            <p class="paragraph">To see the MapFish REST protocol in action you
+            can open a debugger (Firebug for example) and look at the
+            requests/responses exchanged between the browser and the MapFish
+            web services.</p>
+
+            <div id="map"></div>
+
+            <p class="paragraph">In addition to this frontend page this
+            application includes an <a href="${url(controller='admin',
+                action='models')}">admin interface</a> based on <a
+                href="https://github.com/camptocamp/GeoFormAlchemy">GeoFormAlchemy</a>
+            (itself based on <a
+                href="http://docs.formalchemy.org/">FormAlchemy</a>).  This
+            demonstrates how to include GeoFormAlchemy-based admin interfaces
+            in MapFish applications.</p>
+
+        </div>
+    </body>
+</html>

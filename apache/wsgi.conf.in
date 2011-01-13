@@ -1,0 +1,22 @@
+RewriteEngine on
+
+# Serve pylons static files via apache:
+Alias /mapfishsample/${vars:instanceid}/wsgi/app/   ${buildout:directory/mapfishsample/public/app/}
+Alias /mapfishsample/${vars:instanceid}/wsgi/build/ ${buildout:directory/mapfishsample/public/build/}
+Alias /mapfishsample/${vars:instanceid}/wsgi/lib/   ${buildout:directory/mapfishsample/public/lib/}
+
+<IfModule !mod_wsgi.c>
+    LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so
+</IfModule>
+
+# uncomment this if you need HTTP authentication/authorization to work (with
+# repoze.who or any other security toolkit), see the Apache mod_wsgi FAQ to
+# understand why mod_wsgi doesn't pass the user credentials to the WSGI
+# application by default.
+# http://code.google.com/p/modwsgi/wiki/FrequentlyAskedQuestions#Access_Control_Mechanisms
+#WSGIPassAuthorization On
+
+RewriteRule ^${vars:apache-entry-point}$ /mapfishsample/${vars:instanceid}/wsgi/ [PT]
+RewriteRule ^${vars:apache-entry-point}apihelp.html$ /mapfishsample/${vars:instanceid}/wsgi/apihelp.html [PT]
+RewriteRule ^${vars:apache-entry-point}apiloader.js$ /mapfishsample/${vars:instanceid}/wsgi/apiloader.js [PT]
+WSGIScriptAlias /mapfishsample/${vars:instanceid}/wsgi ${buildout:directory/buildout/parts/modwsgi/wsgi}

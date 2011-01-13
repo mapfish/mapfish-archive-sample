@@ -1,0 +1,11 @@
+Querying
+
+- allow editing resulting features
+
+Search
+
+- factorize common code between Search.js and Query.js
+
+API
+
+- package the API: add an apiloader.js script

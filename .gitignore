@@ -1,0 +1,36 @@
+# /
+**.pyc
+*.ini
+.installed.cfg
+*.egg-info
+data
+MANIFEST
+
+# /apache/
+apache/*.conf
+apache/*.txt
+
+# /buildout/
+buildout/develop-eggs
+buildout/eggs
+buildout/bin
+buildout/parts
+
+# /mapfishsample/public/build/
+mapfishsample/public/build/*
+
+# /mapfishsample/public/lib/
+
+# /mapfishsample/templates/
+mapfishsample/templates/globals.js
+
+# /mapserver/
+mapserver/*.map
+
+# /print/
+print/*.jar
+print/*.war
+
+# /tilecache/
+tilecache/*.cfg
+

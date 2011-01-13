@@ -1,0 +1,11 @@
+// this code may execute before the App namespace exists. If it
+// does not exist, we create it ourselves.
+
+if(!window.App) App = {};
+
+App.OpenLayers_ImgPath = "$${url('/lib/openlayers/img/', qualified=True)}";
+App.Ext_BLANK_IMAGE_URL = "$${url('/lib/ext/Ext/resources/images/default/s.gif', qualified=True)}";
+App.tilecacheURL = "$${url(controller='tilecache', action='tilecache', path='', qualified=True)}";
+App.mapservURL = "${vars:mapserv_url}";
+App.printURL = "${vars:print_url}";
+App.poisURL = "$${url(controller='pois', action='index', qualified=True)}";
