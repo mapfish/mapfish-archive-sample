@@ -38,8 +38,27 @@ fi
 createdb -E unicode $${dbname}
 createlang plpgsql $${dbname}
 
-psql -d $${dbname} < "/usr/share/postgresql-$${pg_version}-postgis/lwpostgis.sql"
-psql -d $${dbname} < "/usr/share/postgresql-$${pg_version}-postgis/spatial_ref_sys.sql"
+postgis_sql=""
+if [ -f "/usr/share/postgresql-$${pg_version}-postgis/lwpostgis.sql" ] ; then
+    postgis_sql="/usr/share/postgresql-$${pg_version}-postgis/lwpostgis.sql"
+elif [ -f "/usr/share/postgresql/$${pg_version}/contrib/postgis.sql" ] ; then
+    postgis_sql="/usr/share/postgresql/$${pg_version}/contrib/postgis.sql"
+else
+    echo "Abort: cannot find postgis sql file."
+    exit 1
+fi
+
+spatial_ref_sys_sql=""
+if [ -f "/usr/share/postgresql-$${pg_version}-postgis/spatial_ref_sys.sql" ] ; then
+    spatial_ref_sys_sql="/usr/share/postgresql-$${pg_version}-postgis/spatial_ref_sys.sql"
+elif [ -f "/usr/share/postgresql/$${pg_version}/contrib/spatial_ref_sys.sql" ] ; then
+    spatial_ref_sys_sql="/usr/share/postgresql/$${pg_version}/contrib/spatial_ref_sys.sql"
+else
+    echo "Abort: cannot find spatial_ref_sys sql file."
+    exit 1
+fi
+psql -d $${dbname} < $postgis_sql
+psql -d $${dbname} < $spatial_ref_sys_sql
 
 psql -c "GRANT ALL ON DATABASE \"$${dbname}\" TO \"$${dbuser}\";"
 psql -d $${dbname} -c "GRANT ALL ON TABLE geometry_columns TO \"$${dbuser}\";"
