@@ -57,7 +57,7 @@ App.Search = function(mapPanel, buttonOptions, formPanelOptions) {
         vectorLayer.destroyFeatures();
         // there's a bug in OpenLayers where removing a layer that has
         // already been removed causes an error, work around it
-        if (OpenLayers.Util.indexOf(map.layers, vectorLayer) >= 0) {
+        if (OpenLayers.Util.indexOf(mapPanel.map.layers, vectorLayer) >= 0) {
             mapPanel.map.removeLayer(vectorLayer);
         }
     };
