@@ -18,8 +18,8 @@ usage() {
 import_shapefile() {
     shapefile=$1
     echo $${shapefile}
-    if [[ -f $${shapefile}.shp ]]; then
-        shp2pgsql -s 900913 -I -W UTF8 $${shapefile}.shp public.$${shapefile} | psql -d $${dbname}
+    if [[ -f $${dirname}/$${shapefile}.shp ]]; then
+        shp2pgsql -s 900913 -I -W UTF8 $${dirname}/$${shapefile}.shp public.$${shapefile} | psql -d $${dbname}
     fi
 }
 
