@@ -43,6 +43,8 @@ if [ -f "/usr/share/postgresql-$${pg_version}-postgis/lwpostgis.sql" ] ; then
     postgis_sql="/usr/share/postgresql-$${pg_version}-postgis/lwpostgis.sql"
 elif [ -f "/usr/share/postgresql/$${pg_version}/contrib/postgis.sql" ] ; then
     postgis_sql="/usr/share/postgresql/$${pg_version}/contrib/postgis.sql"
+elif [ -f "/usr/share/postgresql/$${pg_version}/contrib/postgis-1.5/postgis.sql" ] ; then
+    postgis_sql="/usr/share/postgresql/$${pg_version}/contrib/postgis-1.5/postgis.sql"
 else
     echo "Abort: cannot find postgis sql file."
     exit 1
@@ -53,6 +55,8 @@ if [ -f "/usr/share/postgresql-$${pg_version}-postgis/spatial_ref_sys.sql" ] ; t
     spatial_ref_sys_sql="/usr/share/postgresql-$${pg_version}-postgis/spatial_ref_sys.sql"
 elif [ -f "/usr/share/postgresql/$${pg_version}/contrib/spatial_ref_sys.sql" ] ; then
     spatial_ref_sys_sql="/usr/share/postgresql/$${pg_version}/contrib/spatial_ref_sys.sql"
+elif [ -f "/usr/share/postgresql/$${pg_version}/contrib/postgis-1.5/spatial_ref_sys.sql" ] ; then
+    spatial_ref_sys_sql="/usr/share/postgresql/$${pg_version}/contrib/postgis-1.5/spatial_ref_sys.sql"
 else
     echo "Abort: cannot find spatial_ref_sys sql file."
     exit 1
