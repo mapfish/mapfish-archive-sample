@@ -19,7 +19,7 @@ import_shapefile() {
     shapefile=$1
     echo $${shapefile}
     if [[ -f $${dirname}/$${shapefile}.shp ]]; then
-        shp2pgsql -s 900913 -I -W UTF8 $${dirname}/$${shapefile}.shp public.$${shapefile} | psql -d $${dbname}
+        shp2pgsql -s 900913 -I -W UTF8 $${dirname}/$${shapefile}.shp public.$${shapefile} | psql --quiet -d $${dbname}
     fi
 }
 
@@ -61,12 +61,12 @@ else
     echo "Abort: cannot find spatial_ref_sys sql file."
     exit 1
 fi
-psql -d $${dbname} < $postgis_sql
-psql -d $${dbname} < $spatial_ref_sys_sql
+psql --quiet -d $${dbname} < $postgis_sql
+psql --quiet -d $${dbname} < $spatial_ref_sys_sql
 
-psql -c "GRANT ALL ON DATABASE \"$${dbname}\" TO \"$${dbuser}\";"
-psql -d $${dbname} -c "GRANT ALL ON TABLE geometry_columns TO \"$${dbuser}\";"
-psql -d $${dbname} -c "GRANT ALL ON TABLE spatial_ref_sys TO \"$${dbuser}\";"
+psql --quiet -c "GRANT ALL ON DATABASE \"$${dbname}\" TO \"$${dbuser}\";"
+psql --quiet -d $${dbname} -c "GRANT ALL ON TABLE geometry_columns TO \"$${dbuser}\";"
+psql --quiet -d $${dbname} -c "GRANT ALL ON TABLE spatial_ref_sys TO \"$${dbuser}\";"
 
 if [[ -n $${populate} ]]; then
     for shapefile in $${shapefiles}; do
