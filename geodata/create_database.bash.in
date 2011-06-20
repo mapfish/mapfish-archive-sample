@@ -20,6 +20,8 @@ import_shapefile() {
     echo $${shapefile}
     if [[ -f $${dirname}/$${shapefile}.shp ]]; then
         shp2pgsql -s 900913 -I -W UTF8 $${dirname}/$${shapefile}.shp public.$${shapefile} | psql --quiet -d $${dbname}
+	psql --quiet -d $${dbname} -c "GRANT ALL ON TABLE public.$${shapefile} TO \"$${dbuser}\";"
+	psql --quiet -d $${dbname} -c "GRANT ALL ON TABLE public.$${shapefile}_gid_seq TO \"$${dbuser}\";"
     fi
 }
 
