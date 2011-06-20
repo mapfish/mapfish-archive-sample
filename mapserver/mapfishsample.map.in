@@ -39,7 +39,7 @@ MAP
 
     OUTPUTFORMAT
         NAME jpeg
-        DRIVER "GD/JPEG"
+        DRIVER "${vars:mapserver_jpeg_driver}"
         IMAGEMODE RGB
         EXTENSION "jpeg"
         FORMATOPTION "QUALITY=75,PROGRESSIVE=TRUE"
@@ -60,6 +60,7 @@ MAP
 
     WEB
         METADATA
+            "ows_enable_request" "*"
             "wms_title" "changeme"
             "wms_abstract" "changeme"
             "wms_onlineresource" "changeme"
