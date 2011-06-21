@@ -30,8 +30,12 @@ class Grid(tables.Grid):
 
 ## Initialize grids
 
+PoiGrid = Grid(model.Poi)
+PoiGrid.configure(exclude=[PoiGrid.the_geom])
+
 #FooGrid = Grid(model.Foo)
 #ReflectedGrid = Grid(Reflected)
+
 
 from geoformalchemy.base import GeometryFieldRenderer
 from geoalchemy import geometry
