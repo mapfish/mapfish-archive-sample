@@ -24,6 +24,7 @@ Alias /mapfishsample/${vars:instanceid}/wsgi/lib/   ${buildout:directory/mapfish
 #WSGIPassAuthorization On
 
 RewriteRule ^${vars:apache-entry-point}$ /mapfishsample/${vars:instanceid}/wsgi/ [PT]
+RewriteRule ^${vars:apache-entry-point}/$ /mapfishsample/${vars:instanceid}/wsgi/ [PT]
 RewriteRule ^${vars:apache-entry-point}apihelp.html$ /mapfishsample/${vars:instanceid}/wsgi/apihelp.html [PT]
 RewriteRule ^${vars:apache-entry-point}apiloader.js$ /mapfishsample/${vars:instanceid}/wsgi/apiloader.js [PT]
 
