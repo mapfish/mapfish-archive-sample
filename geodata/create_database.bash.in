@@ -33,7 +33,7 @@ while getopts "dp" opt; do
     esac
 done
 
-if [[ -n $${drop} ]]; then
+if [[ -n $${drop} ]] && psql -l | grep $${dbname} > /dev/null; then
     dropdb $${dbname}
 fi
 
