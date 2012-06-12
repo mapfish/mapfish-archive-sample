@@ -15,7 +15,7 @@ setup(
     install_requires=[
         "psycopg2>=2.2.0,<=2.2.99",
         "mapfish>=2.0,<=2.2.99",
-        "httplib2>=0.6.0,<=0.6.99",
+        "httplib2>=0.7.0,<=0.7.99",
         "Babel<=0.9.99",
         "TileCache>=2.10,<=2.10.99",
         "GeoFormAlchemy>=0.2,<=0.3.99",
