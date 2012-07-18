@@ -38,7 +38,8 @@ if [[ -n $${drop} ]] && psql -l | grep $${dbname} > /dev/null; then
 fi
 
 createdb -E unicode $${dbname}
-createlang plpgsql $${dbname}
+# plpgsql lang is already installed in portgresql 9+
+createlang plpgsql $${dbname} || echo -n
 
 postgis_sql=""
 if [ -f "/usr/share/postgresql-$${pg_version}-postgis/lwpostgis.sql" ] ; then
